@@ -60,10 +60,12 @@ const ProjectDetails = (props) => {
         <div class="row" style={{ paddingTop: "2%" }}>
           <div class="col s6">
             <button
-              className="btn black"
+              className="btn red"
               style={{ width: "100%" }}
               onClick={deleteClick}
             >
+              {" "}
+              <i class="material-icons right">delete</i>
               Usuń dane
             </button>
           </div>

@@ -18,14 +18,10 @@ const CreateExcelFile = (props) => {
     <Workbook
       filename="Dalkia dane.xlsx"
       element={
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<SaveIcon />}
-          style={{ width: "100%" }}
-        >
-          ZAPISZ DANE!
-        </Button>
+        <button className="btn black" style={{ width: "100%" }}>
+          <i class="material-icons right">file_download</i>
+          ZAPISZ DANE
+        </button>
       }
     >
       <Workbook.Sheet data={props.dataToSave} name="Dane">

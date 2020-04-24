@@ -8,6 +8,11 @@ import calculator from "../../static/calculator.jpg";
 import data from "../../static/data.jpg";
 
 import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
+
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,9 +91,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Dashboard() {
+function Dashboard(props) {
+  const { auth } = props;
   const classes = useStyles();
-
+  if (!auth.uid) return <Redirect to="/signin" />;
   return (
     <div className={classes.root}>
       <div
@@ -162,3 +168,15 @@ export default function Dashboard() {
     </div>
   );
 }
+
+const mapStateToProps = (state) => {
+  // console.log(state);
+  return {
+    auth: state.firebase.auth,
+  };
+};
+
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect([])
+)(Dashboard);

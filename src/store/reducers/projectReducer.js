@@ -23,7 +23,7 @@ const projectReducer = (state = initState, action) => {
       console.log("delete_PROJECT_ERROR", action.err);
       return state;
     case "addToProject":
-      console.log("addToProject");
+      console.log("Added interpolated data");
       return { state, redirect: true };
     case "addTempData":
       console.log("addTempData");
@@ -39,6 +39,9 @@ const projectReducer = (state = initState, action) => {
       return state;
     case "ADD_TO_DATA_BASE_ERR":
       console.log("ADD_TO_DATA_BASE_ERR");
+      return { state };
+    case "deleteLastProject_SUCCESS":
+      console.log("deleteLastProject_SUCCESS");
       return { state };
 
     default:

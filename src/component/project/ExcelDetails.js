@@ -16,15 +16,24 @@ import {
 export class ExcelDetails extends Component {
   componentDidMount() {
     this.props.changeState();
+    console.log("Excel changed state");
   }
 
   render() {
     const { notifications } = this.props;
+
+    console.log("renderuje");
     return (
       <div>
         {notifications &&
           notifications.map((projects) => {
-            return <ExcelSummary Row1={projects.Row1} object={projects} />;
+            return (
+              <ExcelSummary
+                Row1={projects.Row1}
+                object={projects}
+                key={notifications.id}
+              />
+            );
           })}
       </div>
     );
@@ -34,7 +43,7 @@ export class ExcelDetails extends Component {
 const mapStateToProps = (state) => {
   return {
     tempData: state.firestore.ordered.excel_temp,
-    notifications: state.firestore.ordered.excel,
+    notifications: state.firestore.ordered.excel2,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -51,5 +60,6 @@ export default compose(
     { collection: "projects" },
     { collection: "excel" },
     { collection: "excel_temp" },
+    { collection: "excel2" },
   ])
 )(ExcelDetails);

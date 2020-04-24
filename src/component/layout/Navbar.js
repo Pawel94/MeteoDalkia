@@ -36,13 +36,13 @@ const Navbar = (props) => {
           bottom: "0",
           width: "100%",
           height: "2%",
+          zIndex: "-1",
         }}
       ></div>
     </div>
   );
 };
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,

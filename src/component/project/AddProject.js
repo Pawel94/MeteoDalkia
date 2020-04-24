@@ -33,6 +33,7 @@ export default function AddProject(props) {
       />
 
       <TextField
+        required
         id="temp_z"
         label="TEMPERATURA"
         type={props.timee}
@@ -49,6 +50,7 @@ export default function AddProject(props) {
       />
 
       <TextField
+        required
         id="Vw"
         label="Vw"
         type="search"
@@ -63,6 +65,7 @@ export default function AddProject(props) {
       />
 
       <TextField
+        required
         id="zach"
         label="ZACHMURZENIE"
         type="search"

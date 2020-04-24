@@ -1,6 +1,13 @@
 import React, { Component } from "react";
+
+import { compose } from "redux";
+import { firestoreConnect } from "react-redux-firebase";
 import { connect } from "react-redux";
-import { addToProject, addTempData } from "../../store/actions/projectActions";
+import {
+  addToProject,
+  addTempData,
+  deleteLastProject,
+} from "../../store/actions/projectActions";
 import axios from "axios";
 
 import { Redirect } from "react-router-dom";
@@ -16,7 +23,7 @@ class CreateProject extends Component {
         function () {
           this.props.history.push("/excelDetails");
         }.bind(this),
-        3000
+        8000
       );
     }
   }
@@ -29,31 +36,49 @@ class CreateProject extends Component {
   getDate = (s) => {
     var data = new Date();
     var today =
-      data.getDay() + "." + data.getMonth() + "." + data.getFullYear();
+      data.getDate() + "." + data.getMonth() + "." + data.getFullYear();
     var nextDay =
-      data.getDay() + 1 + "." + data.getMonth() + "." + data.getFullYear();
+      data.getDate() + 1 + "." + data.getMonth() + "." + data.getFullYear();
+    var nextNextDay =
+      data.getDate() + 2 + "." + data.getMonth() + "." + data.getFullYear();
+
+    var thirdDate =
+      data.getDate() + 3 + "." + data.getMonth() + "." + data.getFullYear();
+
+    var fourthday =
+      data.getDate() + 4 + "." + data.getMonth() + "." + data.getFullYear();
     if (s === "Row1") {
-      console.log(today);
       return today + " 12:00";
     }
     if (s === "Row4") {
-      console.log("srodek");
       return today + " 15:00";
     }
     if (s === "Row19") {
-      console.log("srodek");
-      return nextDay + " 6:00";
+      return nextDay + " 06:00";
     }
-    if (s === "Row30") {
-      console.log("srodek");
-      return nextDay + " 244:00";
+    if (s === "Row28") {
+      return nextDay + " 15:00";
+    }
+    if (s === "Row43") {
+      return nextNextDay + " 06:00";
+    }
+    if (s === "Row52") {
+      return nextNextDay + " 15:00";
+    }
+    if (s === "Row67") {
+      return thirdDate + " 06:00";
+    }
+    if (s === "Row76") {
+      return thirdDate + " 15:00";
+    }
+    if (s === "Row85") {
+      return fourthday + " 00:00";
     }
   };
 
   handleChange = (e) => {
     var data = new Date();
     var dataa = this.getDate(e.target.name);
-    console.log(dataa);
     this.setState({
       ...this.state,
       Row3: {
@@ -72,16 +97,15 @@ class CreateProject extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-
-    console.log(this.state);
+    this.props.deleteLastProject();
     this.props.addToProject(this.state);
     this.props.addTempData(this.state);
 
-    console.log("this.props.addToProject(this.state)");
-    console.log();
-    axios.post("https://us-central1-meteo-3323f.cloudfunctions.net/addItem", {
-      item: this.state.Row1,
-    });
+    // console.log("this.props.addToProject(this.state)");
+    // console.log();
+    // axios.post("https://us-central1-meteo-3323f.cloudfunctions.net/addItem", {
+    //   item: this.state.Row1,
+    // });
   };
 
   render() {
@@ -92,8 +116,11 @@ class CreateProject extends Component {
     var nextDay =
       dataa.getDate() + 1 + "." + dataa.getMonth() + "." + dataa.getFullYear();
 
-    console.log("dataaaaa");
-    console.log(dataa.getDay());
+    var nextNextDay =
+      dataa.getDate() + 2 + "." + dataa.getMonth() + "." + dataa.getFullYear();
+    var thirdDate =
+      dataa.getDate() + 3 + "." + dataa.getMonth() + "." + dataa.getFullYear();
+
     if (!auth.uid) return <Redirect to="/signin" />;
     return (
       <div
@@ -131,12 +158,45 @@ class CreateProject extends Component {
           <AddProject
             handleChange={this.handleChange}
             dataa={nextDay}
-            name={"Row30"}
+            name={"Row28"}
+            timee={"15:00"}
+          />
+          <AddProject
+            handleChange={this.handleChange}
+            dataa={nextNextDay}
+            name={"Row43"}
+            timee={"06:00"}
+          />
+          <AddProject
+            handleChange={this.handleChange}
+            dataa={nextNextDay}
+            name={"Row52"}
             timee={"15:00"}
           />
 
+          <AddProject
+            handleChange={this.handleChange}
+            dataa={thirdDate}
+            name={"Row67"}
+            timee={"06:00"}
+          />
+          <AddProject
+            handleChange={this.handleChange}
+            dataa={thirdDate}
+            name={"Row76"}
+            timee={"15:00"}
+          />
+          <AddProject
+            handleChange={this.handleChange}
+            dataa={thirdDate}
+            name={"Row85"}
+            timee={"00:00"}
+          />
+
           <div className="input-field">
-            <button className="btn pink lighten-1">Create</button>
+            <button className="btn black lighten-1">
+              <i class="material-icons right">send</i>PRZELICZ DANE
+            </button>
           </div>
         </form>
       </div>
@@ -158,7 +218,16 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addToProject: (project) => dispatch(addToProject(project)),
     addTempData: (project) => dispatch(addTempData(project)),
+    deleteLastProject: () => dispatch(deleteLastProject()),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateProject);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect([
+    { collection: "projects" },
+    { collection: "excel" },
+    { collection: "excel_temp" },
+    { collection: "excel2" },
+  ])
+)(CreateProject);

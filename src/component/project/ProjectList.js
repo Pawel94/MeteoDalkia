@@ -39,6 +39,6 @@ export default compose(
   firestoreConnect([
     { collection: "projects" },
     { collection: "excel", limit: 3 },
-    { collection: "excel_data_base", limit: 3 },
+    { collection: "excel_data_base", limit: 3, orderBy: ["created", "desc"] },
   ])
 )(ProjectList);

@@ -29,11 +29,15 @@ class SignIn extends Component {
           backgroundColor: "#f1f1f1",
           border: "15px",
           border: "solid",
-          borderColor: "rgb(3, 110, 131)",
+          borderColor: "black",
           borderRadius: "5px",
         }}
       >
-        <form className="" onSubmit={this.handleSubmit}>
+        <form
+          className=""
+          onSubmit={this.handleSubmit}
+          style={{ paddingLeft: "1%", paddingRight: "1%" }}
+        >
           <h5 className="grey-text text-darken-3">Sign In</h5>
           <div className="input-field">
             <label htmlFor="email">Email</label>
@@ -44,7 +48,10 @@ class SignIn extends Component {
             <input type="password" id="password" onChange={this.handleChange} />
           </div>
           <div className="input-field">
-            <button className="btn pink lighten-1 z-depth-0">Login</button>
+            <button className="btn black lighten-1 z-depth-0">
+              {" "}
+              <i class="material-icons right">keyboard_return</i> Login
+            </button>
             <div className="center red-text">
               {authError ? <p>{authError}</p> : null}
             </div>
